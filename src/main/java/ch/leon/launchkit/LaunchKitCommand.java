@@ -10,7 +10,8 @@ import picocli.CommandLine.Command;
         description = "Generate developer project setups from the command line.",
         subcommands = {
                 CreateCommand.class,
-                SampleCommand.class
+                SampleCommand.class,
+                InfoCommand.class
         }
 )
 public class LaunchKitCommand {
