@@ -6,8 +6,7 @@ import java.nio.file.Path;
 
 public class SpringBootGenerator {
 
-    public void generate(Path backendPath, String projectName) throws IOException {
-        Files.createDirectories(backendPath.resolve("src/main/java/com/example/app"));
+    public void generate(Path backendPath, String projectName, int dbPort) throws IOException {        Files.createDirectories(backendPath.resolve("src/main/java/com/example/app"));
         Files.createDirectories(backendPath.resolve("src/main/resources"));
         Files.createDirectories(backendPath.resolve("src/test/java/com/example/app"));
 
@@ -22,8 +21,7 @@ public class SpringBootGenerator {
         );
         Files.writeString(
                 backendPath.resolve("src/main/resources/application.yml"),
-                createApplicationYml()
-        );
+                createApplicationYml(projectName, dbPort)        );
         Files.writeString(
                 backendPath.resolve("src/test/java/com/example/app/ApplicationTests.java"),
                 createTestClass()
@@ -129,29 +127,29 @@ public class SpringBootGenerator {
                 """;
     }
 
-    private String createApplicationYml() {
+    private String createApplicationYml(String projectName, int dbPort) {
         return """
-            server:
-              port: 8080
-
-            spring:
-              application:
-                name: backend
-
-              datasource:
-                url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/app_db}
-                username: ${SPRING_DATASOURCE_USERNAME:app_user}
-                password: ${SPRING_DATASOURCE_PASSWORD:app_password}
-                driver-class-name: org.postgresql.Driver
-
-              jpa:
-                hibernate:
-                  ddl-auto: update
-                show-sql: true
-                properties:
-                  hibernate:
-                    format_sql: true
-            """;
+        server:
+          port: 8080
+        
+        spring:
+          application:
+            name: %s
+        
+          datasource:
+            url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:%d/app_db}
+            username: ${SPRING_DATASOURCE_USERNAME:app_user}
+            password: ${SPRING_DATASOURCE_PASSWORD:app_password}
+            driver-class-name: org.postgresql.Driver
+        
+          jpa:
+            hibernate:
+              ddl-auto: update
+            show-sql: true
+            properties:
+              hibernate:
+                format_sql: true
+        """.formatted(projectName, dbPort);
     }
 
     private String createTestClass() {

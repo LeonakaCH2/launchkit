@@ -14,7 +14,8 @@ public class ProjectGenerator {
             String frontend,
             String database,
             boolean docker,
-            boolean ci
+            boolean ci,
+            int dbPort
     ) throws IOException {
         Path projectRoot = Path.of(projectName);
 
@@ -26,7 +27,7 @@ public class ProjectGenerator {
 
         if (backend.equalsIgnoreCase("springboot")) {
             Path backendPath = projectRoot.resolve("backend");
-            new SpringBootGenerator().generate(backendPath, projectName);
+            new SpringBootGenerator().generate(backendPath, projectName, dbPort);
         } else if (!backend.equalsIgnoreCase("none")) {
             Files.createDirectories(projectRoot.resolve("backend"));
         }
@@ -38,8 +39,7 @@ public class ProjectGenerator {
         if (docker) {
             Files.writeString(
                     projectRoot.resolve("docker-compose.yml"),
-                    createDockerCompose(projectName, database)
-            );
+                    createDockerCompose(projectName, database, dbPort)            );
         }
 
         if (ci) {
@@ -63,8 +63,7 @@ public class ProjectGenerator {
         );
     }
 
-    private String createDockerCompose(String projectName, String database) {
-        if (!database.equalsIgnoreCase("postgres")) {
+    private String createDockerCompose(String projectName, String database, int dbPort) {        if (!database.equalsIgnoreCase("postgres")) {
             return "# Docker Compose setup for " + projectName + "\n";
         }
 
@@ -78,13 +77,13 @@ public class ProjectGenerator {
               POSTGRES_USER: app_user
               POSTGRES_PASSWORD: app_password
             ports:
-              - "5433:5432"
+              - "%d:5432"
             volumes:
               - %s_postgres_data:/var/lib/postgresql/data
         
         volumes:
           %s_postgres_data:
-        """.formatted(projectName, projectName, projectName);
+        """.formatted(projectName, dbPort, projectName, projectName);
     }
 
     private String createGithubActionsWorkflow() {

@@ -13,7 +13,8 @@ public class TodoSampleGenerator {
             String backend,
             String database,
             boolean docker,
-            boolean ci
+            boolean ci,
+            int dbPort
     ) throws IOException {
 
         if (!backend.equalsIgnoreCase("springboot")) {
@@ -26,7 +27,8 @@ public class TodoSampleGenerator {
                 "none",
                 database,
                 docker,
-                ci
+                ci,
+                dbPort
         );
 
         Path projectRoot = Path.of(projectName);

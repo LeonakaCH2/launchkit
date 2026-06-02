@@ -55,6 +55,9 @@ public class CreateCommand implements Callable<Integer> {
     )
     private boolean ci;
 
+    @Option(names = {"--db-port"}, description = "Host port for the database.", defaultValue = "5433")
+    private int dbPort;
+
     @Override
     public Integer call() {
         try {
@@ -65,7 +68,8 @@ public class CreateCommand implements Callable<Integer> {
                     frontend,
                     database,
                     docker,
-                    ci
+                    ci,
+                    dbPort
             );
 
             return 0;

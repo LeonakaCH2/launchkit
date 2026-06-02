@@ -45,6 +45,9 @@ public class TodoSampleCommand implements Callable<Integer> {
     )
     private boolean noCi = false;
 
+    @Option(names = {"--db-port"}, description = "Host port for the database.", defaultValue = "5433")
+    private int dbPort;
+
     @Override
     public Integer call() {
         try {
@@ -56,7 +59,8 @@ public class TodoSampleCommand implements Callable<Integer> {
                     backend,
                     database,
                     useDocker,
-                    useCi
+                    useCi,
+                    dbPort
             );
             return 0;
         } catch (Exception e) {
