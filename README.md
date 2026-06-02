@@ -50,7 +50,7 @@ Generated projects:
 
 ### Build
 
-Build the jar:
+Build the jar first:
 
 ```bash
 mvn clean package
@@ -77,13 +77,25 @@ launchkit --help
 Run the macOS/Linux installer:
 
 ```bash
+bash install/install-mac.sh
+```
+
+Alternatively, make the script executable first:
+
+```bash
 chmod +x install/install-mac.sh
 ./install/install-mac.sh
 ```
 
 The installer creates a launcher and can add LaunchKit to your PATH.
 
-After installation, restart your terminal or source your shell config, then run:
+After installation, restart your terminal or run:
+
+```bash
+source ~/.zshrc
+```
+
+Then test:
 
 ```bash
 launchkit --help

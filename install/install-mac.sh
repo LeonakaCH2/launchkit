@@ -37,11 +37,11 @@ echo ""
 read -r -p "Do you want to add LaunchKit to your PATH? [Y/n] " answer
 
 if [ "$answer" = "" ] || [ "$answer" = "y" ] || [ "$answer" = "Y" ] || [ "$answer" = "yes" ]; then
-  SHELL_CONFIG=""
+  CURRENT_SHELL="$(basename "$SHELL")"
 
-  if [ -n "$ZSH_VERSION" ]; then
+  if [ "$CURRENT_SHELL" = "zsh" ]; then
     SHELL_CONFIG="$HOME/.zshrc"
-  elif [ -n "$BASH_VERSION" ]; then
+  elif [ "$CURRENT_SHELL" = "bash" ]; then
     SHELL_CONFIG="$HOME/.bashrc"
   else
     SHELL_CONFIG="$HOME/.profile"
@@ -50,22 +50,29 @@ if [ "$answer" = "" ] || [ "$answer" = "y" ] || [ "$answer" = "Y" ] || [ "$answe
   PATH_LINE="export PATH=\"$BIN_PATH:\$PATH\""
 
   if [ -f "$SHELL_CONFIG" ] && grep -Fxq "$PATH_LINE" "$SHELL_CONFIG"; then
-    echo "LaunchKit is already in PATH."
+    echo "LaunchKit is already configured in:"
+    echo "  $SHELL_CONFIG"
   else
     echo "" >> "$SHELL_CONFIG"
     echo "# LaunchKit" >> "$SHELL_CONFIG"
     echo "$PATH_LINE" >> "$SHELL_CONFIG"
     echo "Added LaunchKit to PATH in:"
     echo "  $SHELL_CONFIG"
-    echo ""
-    echo "Please restart your terminal or run:"
-    echo "  source $SHELL_CONFIG"
   fi
+
+  export PATH="$BIN_PATH:$PATH"
+
+  echo ""
+  echo "LaunchKit is available in this terminal session."
+  echo "For future terminal windows, restart your terminal or run:"
+  echo "  source $SHELL_CONFIG"
 else
   echo "Skipped PATH update."
   echo "You can run LaunchKit with:"
   echo "  $LAUNCHER_PATH"
 fi
 
-echo ""
 echo "Installation complete."
+echo ""
+echo "Test LaunchKit with:"
+echo "  launchkit --help"
