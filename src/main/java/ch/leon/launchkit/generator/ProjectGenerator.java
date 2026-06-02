@@ -61,6 +61,16 @@ public class ProjectGenerator {
                 projectRoot.resolve(".env.example"),
                 createEnvExample(database)
         );
+        new GenerationLogWriter().write(
+                projectRoot,
+                projectName,
+                backend,
+                frontend,
+                database,
+                docker,
+                ci,
+                dbPort
+        );
     }
 
     private String createDockerCompose(String projectName, String database, int dbPort) {        if (!database.equalsIgnoreCase("postgres")) {
