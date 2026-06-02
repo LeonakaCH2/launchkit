@@ -63,3 +63,8 @@ Thumbs.db
 # Generated test projects
 todo-demo/
 my-test-app/
+todo-port-test/
+todo-output-test/
+todo-test
+todo-*/
+dependency-reduced-pom.xml

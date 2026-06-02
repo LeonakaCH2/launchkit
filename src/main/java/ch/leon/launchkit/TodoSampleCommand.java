@@ -62,6 +62,26 @@ public class TodoSampleCommand implements Callable<Integer> {
                     useCi,
                     dbPort
             );
+            System.out.println();
+            System.out.println("LaunchKit generated project successfully.");
+            System.out.println();
+            System.out.println("Project: " + projectName);
+            System.out.println("Backend: " + backend);
+            System.out.println("Database: " + database);
+            System.out.println("Docker: " + (useDocker ? "enabled" : "disabled"));
+            System.out.println("CI: " + (useCi ? "enabled" : "disabled"));
+            System.out.println("Database port: " + dbPort);
+            System.out.println();
+            System.out.println("Next steps:");
+            System.out.println("  cd " + projectName);
+
+            if (useDocker) {
+                System.out.println("  docker compose up -d");
+            }
+
+            System.out.println("  cd backend");
+            System.out.println("  mvn spring-boot:run");
+            System.out.println();
             return 0;
         } catch (Exception e) {
             System.err.println("Failed to create Todo sample project: " + e.getMessage());
